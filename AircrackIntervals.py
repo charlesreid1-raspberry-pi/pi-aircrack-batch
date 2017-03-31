@@ -1,9 +1,7 @@
-import subprocess
-import os
-import time
+import subprocess, os, sys, time
 from datetime import datetime
 
-script_name = "Aircrack.py"
+script_name = sys.argv[0]
 
 # each experiment will be Nhours in duration
 Nhours = 2
@@ -15,7 +13,15 @@ Nseconds = 15
 Nfiles = (Nhours*3600)/Nseconds
 
 # create a unique file prefix for this experiment
-prefix = datetime.now().strftime('%Y-%m-%d_%H-%m')
+date_prefix = datetime.now().strftime('%Y-%m-%d_%H-%m')
+
+# create a dir for this experiment
+home = os.getenv("HOME")
+wifi = home + "/wifi"
+
+print wifi
+print ["mkdir","-p",wifi]
+subprocess.call(["mkdir","-p",wifi])
 
 print("[%s] About to put card in monitor mode."%(script_name) )
 subprocess.call(['ifconfig','wlan0','down'])
@@ -27,10 +33,12 @@ for i in range(Nfiles):
 
     # construct the airodump command and pipe all its output to /dev/null so it doesn't blow up the syslog
     FNULL = open(os.devnull,'w')
-    the_cmd = ['airodump-ng','wlan0','-w',prefix,'--output-format','csv']
+    the_cmd = ['airodump-ng','wlan0','-w',date_prefix,'--output-format','csv']
  
     # call it
-    p = subprocess.Popen(the_cmd,stdout=FNULL, stderr=subprocess.STDOUT)
+    p = subprocess.Popen(the_cmd,
+            stdout=FNULL, stderr=subprocess.STDOUT,
+            cwd=wifi)
  
     # wait for it
     time.sleep(Nseconds)
