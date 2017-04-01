@@ -10,7 +10,7 @@ Nhours = 0.25
 Nseconds = 15
  
 # figure out how many files there will be 
-Nfiles = (Nhours*3600)/Nseconds
+Nfiles = int((Nhours*3600)/Nseconds)
 
 # create a unique file prefix for this experiment
 date_prefix = datetime.now().strftime('%Y-%m-%d_%H-%m')
@@ -19,7 +19,8 @@ date_prefix = datetime.now().strftime('%Y-%m-%d_%H-%m')
 home = os.getenv("HOME")
 wifi = home + "/wifi"
 
-hostname = os.getenv("HOSTNAME")
+import socket
+hostname = socket.gethostname()
 file_prefix = hostname+'_'+date_prefix
 
 print wifi
