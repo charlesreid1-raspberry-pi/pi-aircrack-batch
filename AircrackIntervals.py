@@ -4,7 +4,7 @@ from datetime import datetime
 script_name = sys.argv[0]
 
 # each experiment will be Nhours in duration
-Nhours = 2
+Nhours = 0.25
 
 # each CSV file will be Nseconds in duration
 Nseconds = 15
@@ -18,6 +18,9 @@ date_prefix = datetime.now().strftime('%Y-%m-%d_%H-%m')
 # create a dir for this experiment
 home = os.getenv("HOME")
 wifi = home + "/wifi"
+
+hostname = os.getenv("HOSTNAME")
+file_prefix = hostname+'_'+date_prefix
 
 print wifi
 print ["mkdir","-p",wifi]
@@ -33,7 +36,7 @@ for i in range(Nfiles):
 
     # construct the airodump command and pipe all its output to /dev/null so it doesn't blow up the syslog
     FNULL = open(os.devnull,'w')
-    the_cmd = ['airodump-ng','wlan0','-w',date_prefix,'--output-format','csv']
+    the_cmd = ['airodump-ng','wlan0','-w',file_prefix,'--output-format','csv']
  
     # call it
     p = subprocess.Popen(the_cmd,
