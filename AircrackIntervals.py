@@ -50,4 +50,4 @@ for i in range(Nfiles):
     # aaaaand bail 
     p.kill()
  
-print("[%s] Success!"%s(script_name) )
+print("[%s] Success!"%(script_name) )
