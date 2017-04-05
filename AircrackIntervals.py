@@ -16,8 +16,7 @@ Nfiles = int((Nhours*3600)/Nseconds)
 date_prefix = datetime.now().strftime('%Y-%m-%d_%H-%m')
 
 # create a dir for this experiment
-home = os.getenv("HOME")
-wifi = home + "/wifi"
+wifi = "/wifi"
 
 import socket
 hostname = socket.gethostname()
