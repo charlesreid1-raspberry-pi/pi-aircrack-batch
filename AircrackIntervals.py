@@ -4,7 +4,7 @@ from datetime import datetime
 script_name = sys.argv[0]
 
 # each experiment will be Nhours in duration
-Nhours = 0.25
+Nhours = 0.5
 
 # each CSV file will be Nseconds in duration
 Nseconds = 15
