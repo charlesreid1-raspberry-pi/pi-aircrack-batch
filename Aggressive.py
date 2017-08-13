@@ -4,7 +4,7 @@ from datetime import datetime
 script_name = sys.argv[0]
 
 # duration
-Nseconds = 30
+Nseconds = 3600*2
  
 # create a unique file prefix for this experiment
 date_prefix = datetime.now().strftime('%Y-%m-%d_%H-%m')
@@ -31,9 +31,10 @@ FNULL = open(os.devnull,'w')
 the_cmd = ['besside-ng','wlan0','-W']
 
 # call it
-p = subprocess.Popen(the_cmd,
-        stdout=FNULL, stderr=subprocess.STDOUT,
-        cwd=wifi)
+p = subprocess.Popen(the_cmd, cwd=wifi)
+#p = subprocess.Popen(the_cmd,
+#        stdout=FNULL, stderr=subprocess.STDOUT,
+#        cwd=wifi)
 
 # wait for it
 time.sleep(Nseconds)
