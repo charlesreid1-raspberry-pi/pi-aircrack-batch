@@ -3,15 +3,9 @@ from datetime import datetime
 
 script_name = sys.argv[0]
 
-# each experiment will be Nhours in duration
-Nhours = 2
-
-# each CSV file will be Nseconds in duration
-Nseconds = 15
+# duration
+Nseconds = 3600*2
  
-# figure out how many files there will be 
-Nfiles = int((Nhours*3600)/Nseconds)
-
 # create a unique file prefix for this experiment
 date_prefix = datetime.now().strftime('%Y-%m-%d_%H-%m')
 
@@ -32,21 +26,20 @@ subprocess.call(['iwconfig','wlan0','mode','monitor'])
 subprocess.call(['ifconfig','wlan0','up'])
 print "Done."
 
-for i in range(Nfiles):
+# construct the airodump command and pipe all its output to /dev/null so it doesn't blow up the syslog
+FNULL = open(os.devnull,'w')
+the_cmd = ['besside-ng','wlan0','-W']
 
-    # construct the airodump command and pipe all its output to /dev/null so it doesn't blow up the syslog
-    FNULL = open(os.devnull,'w')
-    the_cmd = ['airodump-ng','wlan0','-w',file_prefix,'--output-format','csv']
- 
-    # call it
-    p = subprocess.Popen(the_cmd,
-            stdout=FNULL, stderr=subprocess.STDOUT,
-            cwd=wifi)
- 
-    # wait for it
-    time.sleep(Nseconds)
+# call it
+p = subprocess.Popen(the_cmd, cwd=wifi)
+#p = subprocess.Popen(the_cmd,
+#        stdout=FNULL, stderr=subprocess.STDOUT,
+#        cwd=wifi)
 
-    # aaaaand bail 
-    p.kill()
+# wait for it
+time.sleep(Nseconds)
+
+# aaaaand bail 
+p.kill()
  
 print("[%s] Success!"%(script_name) )
